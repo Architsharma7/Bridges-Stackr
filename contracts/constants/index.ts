@@ -1,6 +1,6 @@
 const SepoliaMailBox = "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766";
 const ScrollSepoliaMailBox = "0x3C5154a193D6e2955650f9305c8d80c18C814A68";
-const SepoliaHyperlaneBridge = "0x3b6C282fbf3d4A0e3179FbCa40Fd26dfE6c1Ef19";
+const SepoliaHyperlaneBridge = "0x4944a0C31CF4777F015399Ebe4E758Af35269174";
 const ScrollSepoliaHyperlaneBridge = "0xce1847C8729D226A640df70aae5AFb899a27205B";
 const AppInboxSepolia = "0xD9f7703EeF547d0922a4c07e950c7e22F4dC55B6";
 const AppInboxScrollSepolia = "0x0000000000000000000000000000000000000000";  
