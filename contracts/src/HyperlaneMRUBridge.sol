@@ -114,7 +114,7 @@ contract HyperlaneMRUBridge is IMessageRecipient {
         uint32 _origin,
         bytes32 _sender,
         bytes calldata _message
-    ) external payable onlyMailbox {
+    ) external payable virtual override onlyMailbox {
         (address token, uint256 amount, address to) = abi.decode(
             _message,
             (address, uint256, address)
