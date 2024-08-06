@@ -36,13 +36,15 @@ contract HyperlaneMRUBridge is IMessageRecipient {
         uint32 indexed destination,
         bytes32 indexed recipient,
         address token,
-        uint256 amount
+        uint256 amount,
+        address to
     );
     event ReceivedTransferRemote(
         uint32 indexed origin,
         address indexed recipient,
         address token,
-        uint256 amount
+        uint256 amount,
+        address receiver
     );
 
     modifier onlyMailbox() {
@@ -78,7 +80,8 @@ contract HyperlaneMRUBridge is IMessageRecipient {
         uint32 _destination,
         address _recipient,
         address _token,
-        uint256 _amount
+        uint256 _amount,
+        address _to
     ) external payable {
         require(_amount > 0, "Amount must be greater than 0");
 
@@ -95,14 +98,15 @@ contract HyperlaneMRUBridge is IMessageRecipient {
         mailbox.dispatch{value: msg.value}(
             _destination,
             TypeCasts.addressToBytes32(_recipient),
-            abi.encode(_token, _amount)
+            abi.encode(_token, _amount, _to)
         );
 
         emit SentTransferRemote(
             _destination,
             TypeCasts.addressToBytes32(_recipient),
             _token,
-            _amount
+            _amount,
+            _to
         );
     }
 
@@ -111,25 +115,25 @@ contract HyperlaneMRUBridge is IMessageRecipient {
         bytes32 _sender,
         bytes calldata _message
     ) external payable onlyMailbox {
-        (address token, uint256 amount) = abi.decode(
+        (address token, uint256 amount, address to) = abi.decode(
             _message,
-            (address, uint256)
+            (address, uint256, address)
         );
         address recipient = _sender.bytes32ToAddress();
 
         if (bridgeDomain == MRU_DOMAIN) {
             require(appInbox != address(0), "AppInbox not set");
-            bytes memory mruMessage = abi.encode(token, recipient, amount);
+            bytes memory mruMessage = abi.encode(token, to, amount);
             bytes32 identifier = keccak256("BRIDGE_TOKEN");
             ITicketFactory(appInbox).createTicket(
                 identifier,
-                recipient,
+                to,
                 mruMessage
             );
         } else {
-            IERC20(token).safeTransfer(recipient, amount);
+            IERC20(token).safeTransfer(to, amount);
         }
 
-        emit ReceivedTransferRemote(_origin, recipient, token, amount);
+        emit ReceivedTransferRemote(_origin, recipient, token, amount, to);
     }
 }
