@@ -7,13 +7,15 @@ const mintToken: STF<BridgeState> = {
       (account) => account.address === inputs.address
     );
 
+    const amountBigInt = BigInt(inputs.amount);
+
     if (accountIdx === -1) {
       state.push({
         address: inputs.address,
-        balance: inputs.amount,
+        balance: amountBigInt,
       });
     } else {
-      state[accountIdx].balance += inputs.amount;
+      state[accountIdx].balance += amountBigInt;
     }
 
     return state;

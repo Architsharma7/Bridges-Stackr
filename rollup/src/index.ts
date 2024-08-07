@@ -1,6 +1,6 @@
 import { ActionSchema, AllowedInputTypes, MicroRollup } from "@stackr/sdk";
 import { Bridge } from "@stackr/sdk/plugins";
-import { Wallet, AbiCoder, formatEther } from "ethers";
+import { Wallet, AbiCoder, formatUnits } from "ethers";
 import dotenv from "dotenv";
 
 import { stackrConfig } from "../stackr.config.ts";
@@ -39,13 +39,27 @@ async function main() {
   Bridge.init(rollup, {
     handlers: {
       BRIDGE_TOKEN: async (args) => {
-        const [_to, _amount] = abiCoder.decode(["address", "uint"], args.data);
+        console.log("args data:", args.data);
+        const [_token, _amount, _to] = abiCoder.decode(
+          ["address", "uint256", "address"],
+          args.data
+        );
         console.log("Minting token to", _to, "with amount", _amount);
+
+        const data = args.data.startsWith('0x') ? args.data.slice(2) : args.data;
+        const token = '0x' + data.slice(24, 64);
+        const to = '0x' + data.slice(88, 128);
+        const amount = BigInt('0x' + data.slice(152));
+  
+        console.log("Decoded token:", token);
+        console.log("Decoded to:", to);
+        console.log("Decoded amount:", amount.toString());
         const inputs = {
-          address: _to,
-          amount: Number(formatEther(_amount)),
+          address: to,
+          amount: amount.toString(),
         };
 
+        console.log("inputs:", inputs);
         const signature = await signMessage(operator, MintTokenSchema, inputs);
         const action = MintTokenSchema.actionFrom({
           inputs,

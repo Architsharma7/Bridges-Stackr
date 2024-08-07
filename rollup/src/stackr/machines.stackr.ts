@@ -6,7 +6,7 @@ import { transitions } from "./transitions";
 
 type Balances = {
   address: string;
-  balance: number;
+  balance: bigint;
 }[];
 
 export class BridgeState extends State<Balances> {
