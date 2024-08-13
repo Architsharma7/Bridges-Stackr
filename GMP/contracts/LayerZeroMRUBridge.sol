@@ -83,6 +83,12 @@ contract LayerZeroMRUBridge is OApp {
         return fee.nativeFee;
     }
 
+    /* use this function to get the _peer from the peer address (destination OApp Bridge contract address)
+    function addressToBytes32(address _addr) public pure returns (bytes32) {
+        return bytes32(uint256(uint160(_addr)));
+    }
+    */
+
     function setPeer(
         uint32 _eid,
         bytes32 _peer

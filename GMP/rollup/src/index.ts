@@ -38,8 +38,9 @@ const main = async () => {
         console.log("args data:", args.data);
         const [timestamp] = abiCoder.decode(["uint256"], args.data);
         console.log("Decoded timestamp:", timestamp);
+        const timestampNumber = Number(timestamp);
         const inputs = {
-          timestamp: timestamp,
+          timestamp: timestampNumber,
         }
         const signature = await signMessage(operator, UpdateCounterSchema, inputs);
         const incrementAction = UpdateCounterSchema.actionFrom({
