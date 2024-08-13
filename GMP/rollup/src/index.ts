@@ -34,7 +34,8 @@ const main = async () => {
 
   Bridge.init(mru, {
     handlers: {
-      LZ_MESSAGE: async (args) => {
+      //@note: This is for Axelar Bridge, for the LayerZeroBridge, LZ_MESSAGE can be used.
+      AXELAR_MESSAGE: async (args) => {
         console.log("args data:", args.data);
         const [timestamp] = abiCoder.decode(["uint256"], args.data);
         console.log("Decoded timestamp:", timestamp);
