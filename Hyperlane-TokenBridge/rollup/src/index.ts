@@ -40,23 +40,14 @@ async function main() {
     handlers: {
       BRIDGE_TOKEN: async (args) => {
         console.log("args data:", args.data);
-        const [_token, _amount, _to] = abiCoder.decode(
-          ["address", "uint256", "address"],
+        const [_token, _to, _amount] = abiCoder.decode(
+          ["address", "address", "uint256"],
           args.data
         );
-        console.log("Minting token to", _to, "with amount", _amount);
-
-        const data = args.data.startsWith('0x') ? args.data.slice(2) : args.data;
-        const token = '0x' + data.slice(24, 64);
-        const to = '0x' + data.slice(88, 128);
-        const amount = BigInt('0x' + data.slice(152));
-  
-        console.log("Decoded token:", token);
-        console.log("Decoded to:", to);
-        console.log("Decoded amount:", amount.toString());
+        console.log("Minting token to", _to, "with amount", Number(_amount));
         const inputs = {
-          address: to,
-          amount: amount.toString(),
+          address: _to,
+          amount: Number(_amount),
         };
 
         console.log("inputs:", inputs);
