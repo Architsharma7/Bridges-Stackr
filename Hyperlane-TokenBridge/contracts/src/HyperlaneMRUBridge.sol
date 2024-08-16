@@ -65,9 +65,10 @@ contract HyperlaneMRUBridge is IMessageRecipient {
         uint32 _destination,
         address _recipient,
         address _token,
-        uint256 _amount
+        uint256 _amount,
+        address _to
     ) public view returns (uint256) {
-        bytes memory message = abi.encode(_token, _amount);
+        bytes memory message = abi.encode(_token, _amount, _to);
         return
             mailbox.quoteDispatch(
                 _destination,
@@ -130,8 +131,6 @@ contract HyperlaneMRUBridge is IMessageRecipient {
                 to,
                 mruMessage
             );
-        } else {
-            IERC20(token).safeTransfer(to, amount);
         }
 
         emit ReceivedTransferRemote(_origin, recipient, token, amount, to);

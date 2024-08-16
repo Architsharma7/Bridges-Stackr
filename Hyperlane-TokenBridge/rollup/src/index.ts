@@ -1,6 +1,6 @@
 import { ActionSchema, AllowedInputTypes, MicroRollup } from "@stackr/sdk";
 import { Bridge } from "@stackr/sdk/plugins";
-import { Wallet, AbiCoder, formatUnits } from "ethers";
+import { Wallet, AbiCoder, formatEther } from "ethers";
 import dotenv from "dotenv";
 
 import { stackrConfig } from "../stackr.config.ts";
@@ -47,7 +47,7 @@ async function main() {
         console.log("Minting token to", _to, "with amount", Number(_amount));
         const inputs = {
           address: _to,
-          amount: Number(_amount),
+          amount: Number(formatEther(_amount)),
         };
 
         console.log("inputs:", inputs);
