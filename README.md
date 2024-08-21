@@ -107,7 +107,7 @@ Just 2 more steps to bridge tokens to the MRU
 
 - First, pass in the inputs for the `estimateTransferRemoteFee` and call it to fetch the gas fees required for the transaction. The inputs can be:
     
-          `_destination` : domain of the destination chain (will always be Sepolia)
+    `_destination` : domain of the destination chain (will always be Sepolia)
     
     `_recipient` : address of the recipient contract (token bridge contract deployed on Sepolia)
     
