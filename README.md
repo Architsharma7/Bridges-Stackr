@@ -1,4 +1,4 @@
-# Bridging Integration with Stackr Micro-rollup
+# Bridging Integration with Stackr Micro-rollup (Hyperlane/Axelar/LayerZero)
 
 ## Overview
 
