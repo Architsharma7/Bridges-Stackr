@@ -43,7 +43,8 @@ contract AxelarMRUBridge is AxelarExecutable {
         string calldata _destinationAddress,
         uint256 _message
     ) external payable {
-        require(msg.value > 0, "Gas payment is required");
+        uint256 fee = estimateGasFee(_destinationChain, _destinationAddress, _message);
+        require(msg.value > fee, "Not enough gas fees");
 
         bytes memory payload = abi.encode(msg.sender, _message);
 
