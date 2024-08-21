@@ -4,6 +4,9 @@
 
 This guide provides the needed code to set up a cross-chain bridge for message passing/token bridging from any other chain to Stackr’s Micro-rollups.
 
+GMP (General Message Passing) demonstrates passing messages from any other chain to MRU, while the Token Bridge demonstrates bridging tokens from any 
+other chains to MRU.
+
 ## Pre-requisites
 
 Before you begin reading this, please ensure you know these or go through the following:
