@@ -8,8 +8,8 @@ This guide provides the needed code to set up a cross-chain bridge for message p
 
 Before you begin reading this, please ensure you know these or go through the following:
 
-- Basic understanding of Stackr’s Micro-rollup. https://docs.stf.xyz/build/zero-to-one/getting-started
-- Basic understanding of cross-chain bridges:  https://chain.link/education-hub/cross-chain-bridge
+- Basic understanding of Stackr’s Micro-rollup. [Get started with Micro-rollups ↗](https://docs.stf.xyz/build/zero-to-one/getting-started)
+- Basic understanding of cross-chain bridges:  [Cross chain bridging ↗](https://chain.link/education-hub/cross-chain-bridge)
 
 ## Project Structure
 
@@ -36,11 +36,11 @@ Before you begin reading this, please ensure you know these or go through the fo
 
 Deploy the `Bridge` contract present in the contracts folder on two chains.
 
-- **Origin chain:** Any chain of your choice and supported by Hyperlane/Axelar/LayerZero
+- `Origin chain`: Any chain of your choice and supported by Hyperlane/Axelar/LayerZero
     
-    Supported Networks : (https://docs.hyperlane.xyz/docs/reference/contract-addresses) | https://docs.axelar.dev/dev/reference/testnet-contract-addresses | https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts
+    Supported Networks : [Hyperlane](https://docs.hyperlane.xyz/docs/reference/contract-addresses) | [Axelar](https://docs.axelar.dev/dev/reference/testnet-contract-addresses) | [LayerZero](https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts)
     
-- **Destination Chain:** It will be Ethereum Sepolia because the AppInbox is deployed on it.
+- `Destination Chain`: It will be Ethereum Sepolia because the AppInbox is deployed on it.
 
 The constructor arguments for each contract are listed below:
 
@@ -48,31 +48,31 @@ The constructor arguments for each contract are listed below:
 
 **Constructor Arguments**
 
-- **Mailbox Addresses:** https://docs.hyperlane.xyz/docs/reference/contract-addresses#mailbox
-- **AppInbox address:** When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
-- **Local Domain:** Domain ID of the chain you are deploying the contract to. For Sepolia, it is $11155111$
+- `Mailbox Addresses`: [Mailbox addresses](https://docs.hyperlane.xyz/docs/reference/contract-addresses#mailbox)
+- `AppInbox address`: When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
+- `Local Domain`: Domain ID of the chain you are deploying the contract to. For Sepolia, it is $11155111$
 
 ### **Axelar**
 
 **Constructor Arguments**
 
-- **_gateway, _gasReceiver:** https://docs.axelar.dev/dev/reference/testnet-contract-addresses
-- **AppInbox address:** When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
+- `_gateway, _gasReceiver`: [Axelar contract addresses](https://docs.axelar.dev/dev/reference/testnet-contract-addresses)
+- `AppInbox address`: When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
 
 ### LayerZero
 
 **Constructor Arguments**
 
-- **_endpoint**:  endpoint address for your current chain.  https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts
-- **_owner:** address of the owner of your contract, can be any address
-- **AppInbox address:** When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
+- `_endpoint`:  endpoint address for your current chain.  [LayerZero deployed contracts](https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts)
+- `_owner`: address of the owner of your contract, can be any address
+- `AppInbox address`: When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
 
 In the case of **LayerZero, t**o connect your OApp deployments together, you will need to call `setPeer` on both chains.
 
 Arguments for `setPeer` function:
 
-- **_eid:** the **destination** endpoint ID for the other chain (chain you want to bridge from)
-- **_peer**: the destination OApp contract address in `bytes32` format.
+- `_eid`: the **destination** endpoint ID for the other chain (chain you want to bridge from)
+- `_peer`: the destination OApp contract address in `bytes32` format.
     
     This function can be used to get the bytes32 format from the peer address (destination OApp Bridge contract address)(chain you want to bridge from)
     
@@ -87,13 +87,15 @@ Arguments for `setPeer` function:
 
 Now that we have deployed our contracts, it is time to set the bridge contract address in the AppInbox so that it can create a ticket.
 
-It can be easily done using the CLI:https://docs.stf.xyz/build/plugins/bridging#2-set-the-bridge-on-the-appinbox 
+It can be easily done using the CLI: [CLI set bridge](https://docs.stf.xyz/build/plugins/bridging#2-set-the-bridge-on-the-appinbox)
 
 or using Etherscan, by calling the `setBridge` function using the operator wallet and passing the deployed sepolia Token Bridge’s address as input.
 
 After that run the MRU using the command 
 
-`bun run src/index.ts`
+```bash
+  bun run src/index.ts
+```
 
 ### **Approve Tokens**
 
