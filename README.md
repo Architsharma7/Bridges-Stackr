@@ -55,12 +55,35 @@ The constructor arguments for each contract are listed below:
 - `AppInbox address`: When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
 - `Local Domain`: Domain ID of the chain you are deploying the contract to. For Sepolia, it is $11155111$
 
+  In the case of Hyperlane, since we are performing token bridging, we will deploy an ERC20 token on the destination chain and approve the token for the contract.
+  This contract can be used for the ERC20 token.
+
+  ```bash
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.20;
+
+    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+    contract MyToken is ERC20 {
+        constructor() ERC20("MyToken", "MT") {
+            _mint(msg.sender, 1000000 * (10 ** uint256(decimals())));
+        }
+    }
+    ```
+  
+
+  **Approve Tokens**
+  
+  Since the tokens will be locked in the Token bridge contract on the origin chain, the contract needs approval for the tokens to be spent. To achieve this, call the `approve`     function on the ERC-20 contract and pass the Token Bridge’s address of the origin chain as `spender` and any value you want.
+  
+
 ### **Axelar**
 
 **Constructor Arguments**
 
 - `_gateway, _gasReceiver`: [Axelar contract addresses](https://docs.axelar.dev/dev/reference/testnet-contract-addresses)
 - `AppInbox address`: When deploying on the origin chain it will be `0x0000000000000000000000000000000000000000` and when on Sepolia, it will be the AppInbox address, which can be found in the `deployment.json` of your rollup.
+  
 
 ### LayerZero
 
@@ -84,6 +107,7 @@ Arguments for `setPeer` function:
             return bytes32(uint256(uint160(_addr)));
     }
     ```
+
     
 
 ### **Set Bridge and Run MRU**
@@ -100,9 +124,6 @@ After that run the MRU using the command
   bun run src/index.ts
 ```
 
-### **Approve Tokens**
-
-Since the tokens will be locked in the Token bridge contract on the origin chain, the contract needs approval for the tokens to be spent. To achieve this, call the `approve` function on the ERC-20 contract and pass the Token Bridge’s address of the origin chain as `spender` and any value you want.
 
 ### **Bridging**
 
